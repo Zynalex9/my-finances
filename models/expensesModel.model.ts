@@ -5,12 +5,17 @@ const expensesSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true, // Ensure that userId is required
+      required: true,
+    },
+    budgetId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Budget", 
+      required: true,
     },
     category: {
       type: String,
       required: [true, "Please enter category"],
-      trim: true, // Remove whitespace
+      trim: true,
     },
     amount: {
       type: Number,
@@ -19,7 +24,7 @@ const expensesSchema = new mongoose.Schema(
     currency: {
       type: String,
       enum: ["usd", "pkr", "eur", "inr"],
-      required: true, // Ensure currency is required
+      required: true
     },
     spendingDate: {
       type: Date,

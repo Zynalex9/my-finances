@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import expensesModel from "./expensesModel.model";
 
 const budgetSchema = new mongoose.Schema(
   {
@@ -9,12 +10,12 @@ const budgetSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      required: [true, "Please enter category"],
+      required: [true, "Please enter category"], // e.g., "food", "rent"
       trim: true, // Remove whitespace
     },
     amount: {
       type: Number,
-      required: [true, "Please enter amount"],
+      required: [true, "Please enter amount"], // Total budgeted amount for this category
     },
     currency: {
       type: String,
@@ -29,13 +30,23 @@ const budgetSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    remainingAmount: {
-      type: Number,
-      required: true,
-    },
   },
   { timestamps: true }
 );
+
+// Method to calculate remaining amount based on expenses of the same category
+budgetSchema.methods.calculateRemainingAmount = async function () {
+  // Fetch all expenses that belong to this budget category
+  const expenses = await expensesModel.find({
+    userId: this.userId, // Ensure expenses belong to the same user
+    category: this.category, // Match category, e.g., "food" expenses for "food" budget
+  });
+
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+
+  // Remaining amount = budgeted amount - total expenses in this category
+  return this.amount - totalExpenses;
+};
 
 const budgetModel = mongoose.models.Budget || mongoose.model("Budget", budgetSchema);
 export default budgetModel;
