@@ -6,21 +6,25 @@ const budgetSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true, // Ensure that userId is required
+      required: true,
     },
     category: {
       type: String,
-      required: [true, "Please enter category"], // e.g., "food", "rent"
-      trim: true, // Remove whitespace
+      required: true, // e.g., "food", "rent"
+      trim: true,
     },
     amount: {
       type: Number,
-      required: [true, "Please enter amount"], // Total budgeted amount for this category
+      required: true, // Total budgeted amount for this category
     },
-    currency: {
-      type: String,
-      enum: ["usd", "pkr", "eur", "inr"],
-      required: true, // Ensure currency is required
+    remainingAmount: {
+      type: Number, // This will be calculated dynamically
+      default: 0, // Initialize with 0, will be updated later
+    },
+    frequency: {
+      type: String, // e.g., "monthly", "weekly", "custom"
+      enum: ["monthly", "weekly", "custom"],
+      default: "monthly",
     },
     startDate: {
       type: Date,
@@ -28,13 +32,20 @@ const budgetSchema = new mongoose.Schema(
     },
     endDate: {
       type: Date,
-      default: Date.now,
+      default: function () {
+        return new Date(new Date().setMonth(new Date().getMonth() + 1));
+      }, // End date for custom budget; default to 1 month
+    },
+    currency: {
+      type: String,
+      enum: ["usd", "pkr", "eur", "inr"],
+      required: true,
     },
   },
   { timestamps: true }
 );
 
-// Method to calculate remaining amount based on expenses of the same category
+// Calculate remaining amount based on expenses of the same category
 budgetSchema.methods.calculateRemainingAmount = async function () {
   // Fetch all expenses that belong to this budget category
   const expenses = await expensesModel.find({
@@ -44,8 +55,11 @@ budgetSchema.methods.calculateRemainingAmount = async function () {
 
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
 
-  // Remaining amount = budgeted amount - total expenses in this category
-  return this.amount - totalExpenses;
+  // Update remainingAmount in the budget
+  this.remainingAmount = this.amount - totalExpenses;
+  await this.save(); // Save the updated budget document
+
+  return this.remainingAmount;
 };
 
 const budgetModel = mongoose.models.Budget || mongoose.model("Budget", budgetSchema);
