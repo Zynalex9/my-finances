@@ -11,12 +11,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 const NavBar = () => {
   const [displayName, setDisplayName] = useState(""); // State for user display name
   const [isSignedIn, setIsSignedIn] = useState(false); // State for sign-in status
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown visibility
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -50,43 +50,35 @@ const NavBar = () => {
     fetchUser(); // Fetch user data on component mount
   }, []);
 
-  return (
-    <nav className="bg-dark-gray text-white w-full flex justify-between items-center p-4 shadow-md">
-      <div className="flex items-center">
-        <h2 className="text-xl font-bold">Logo</h2>
-      </div>
-      {isSignedIn ? (
-        <div className="flex space-x-6">
-          <Link
-            href="#"
-            className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
-          >
-            Expenses
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
-          >
-            All Incomes
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
-          >
-            All Budgets
-          </Link>
-        </div>
-      ) : (
-        ""
-      )}
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev); // Toggle dropdown visibility
+  };
 
-      <div className="flex items-center border-l-2 border-slate-800 px-10">
+  return (
+    <nav className="bg-dark-gray text-white w-full flex justify-between items-center p-4 shadow-md relative">
+      <div className="flex items-center space-x-20">
+        <h2 className="text-xl font-bold">Logo</h2>
+        {/* Menu Button for Small Screens */}
+        <div className="block lg:hidden ">
+          <button onClick={toggleDropdown} className="text-white">
+            <span className="text-xl "><h1>Menu</h1></span>
+          </button>
+        </div>
+      </div>
+
+      {/* Links for Large Screens */}
+      <div className="hidden lg:flex space-x-6">
+        {isSignedIn && (
+          <>
+            <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
+            <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Expenses</Link>
+            <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
+            <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
+          </>
+        )}
+      </div>
+
+      <div className="flex items-center border-l-2 border-slate-800">
         {isSignedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger className="text-lg bg-slate-800 rounded-lg p-2">
@@ -118,6 +110,30 @@ const NavBar = () => {
           </Link>
         )}
       </div>
+
+      {/* Dropdown Menu for Small Screens */}
+      {isDropdownOpen && (
+        <div className="absolute top-16 left-0 w-full bg-dark-gray z-50">
+          <div className="flex flex-col space-y-2 p-4">
+            {isSignedIn && (
+              <>
+                <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
+                <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Expenses</Link>
+                <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
+                <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
+              </>
+            )}
+            {!isSignedIn && (
+              <Link
+                href="/login"
+                className="text-lg bg-slate-800 rounded-lg p-2 hover:bg-slate-700 transition-colors"
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
