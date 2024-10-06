@@ -32,7 +32,9 @@ const Page = () => {
 
   // Destructure reset and formState from form
   const { reset, formState: { errors, isSubmitting } } = form;
-
+console.log("form", form)
+console.log("errors", errors)
+console.log("isSubmitting", isSubmitting)
   const onSubmit = async (data: any) => {
     console.log(data); // Handle form submission
     try {

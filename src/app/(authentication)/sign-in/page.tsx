@@ -35,7 +35,9 @@ export default function LoginForm() {
       password: "",
     },
   });
+  const { formState: { errors, isSubmitting }, setError } = form;
   const router = useRouter();
+  
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       const response = await axios.post("/api/user/sign-in", data);
@@ -44,7 +46,18 @@ export default function LoginForm() {
         title: "Logged in successfully",
         description: `Welcome back ${data.email}`,
       });
-    } catch (error) {}
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        // Check if the error has a response and handle accordingly
+        const errorMessage = error.response.data.message;
+        
+        if (errorMessage === "User not found. Invalid email") {
+          setError("email", { type: "manual", message: errorMessage });
+        } else if (errorMessage === "Invalid Password") {
+          setError("password", { type: "manual", message: errorMessage });
+        }
+      }
+    }
   }
 
   return (
@@ -107,7 +120,7 @@ export default function LoginForm() {
               type="submit"
               className="w-full bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 py-2"
             >
-              Log In
+              {isSubmitting ? "Processing...." : "Sign in"}
             </Button>
           </form>
         </Form>

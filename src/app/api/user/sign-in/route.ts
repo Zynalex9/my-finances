@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
           message: "User not found. Invalid email",
           success: false,
         },
-        { status: 404 }
+        { status: 401 } // Use 401 for unauthorized access
       );
     }
     const validPassword = await bcrypt.compare(password, user.password);
@@ -26,9 +26,10 @@ export async function POST(request: NextRequest) {
           message: "Invalid Password",
           success: false,
         },
-        { status: 404 }
+        { status: 401 } // Use 401 for unauthorized access
       );
     }
+    
     const tokenData = {
       id: user._id,
       username: user.username,
@@ -47,6 +48,6 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error: any) {
-    console.log("Unexpected error occured in registering an user", error);
+    console.log("Unexpected error occurred in registering a user", error);
   }
 }
