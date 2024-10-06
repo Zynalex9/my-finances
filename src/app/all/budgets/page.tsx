@@ -1,11 +1,116 @@
-import React from 'react'
+"use client";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-const page = () => {
+// Function to format the date into MM/DD/YYYY
+const formatDate = (dateString: string) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "2-digit", // Ensures two-digit month
+    day: "2-digit",   // Ensures two-digit day
+  };
+  const parts = new Intl.DateTimeFormat('en-US', options).formatToParts(new Date(dateString));
+  const month = parts.find(part => part.type === 'month')?.value;
+  const day = parts.find(part => part.type === 'day')?.value;
+  const year = parts.find(part => part.type === 'year')?.value;
+  return `${month}/${day}/${year}`; // Returns in MM/DD/YYYY format
+};
+
+const Page = () => {
+  const [budgets, setBudgets] = useState<any[]>([]);
+  const [loader, setLoader] = useState(true);
+
+  async function getBudgets() {
+    try {
+      setLoader(true);
+      const response = await axios.get("/api/budget/getallbudgets");
+      if (response.status === 200) {
+        setBudgets(response.data.budgets);
+        console.log(response.data.budgets); // Log the budgets here
+      }
+      setLoader(false);
+    } catch (error) {
+      setLoader(false);
+      console.error("Error fetching budgets:", error);
+    }
+  }
+
+  useEffect(() => {
+    getBudgets();
+  }, []);
+
   return (
-    <div>
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolore, labore modi incidunt, totam enim saepe nesciunt error temporibus iste fugit non debitis cupiditate molestiae quod deleniti suscipit dignissimos voluptatibus doloribus velit ad culpa hic sed. Dolore minus eum officiis rem, nobis quisquam voluptatem quidem! Magni praesentium porro quibusdam. Odio, temporibus deleniti unde cupiditate voluptate, officia sit delectus recusandae est et fugiat dolores consequatur amet quis repudiandae nulla sint perspiciatis. Esse aut, rerum tempore magni dolorum repellat! Delectus, debitis tenetur, saepe voluptatibus quo nisi fugiat molestias mollitia rem reiciendis aliquid praesentium placeat ex aspernatur facilis eveniet ad nostrum odit officia? Laudantium, odit similique dolorem est, nesciunt necessitatibus ipsa autem laborum porro suscipit vero consectetur ipsum sint facere, officia ex vitae. Neque ullam voluptas harum impedit quidem id, maiores expedita, dolores porro dignissimos vitae dolore dolorem eum. Architecto, nisi. At, quidem eos adipisci eius optio veritatis eveniet, atque aliquid, quam officia natus culpa? Quasi possimus nulla nemo aspernatur unde et aut? Itaque officia ipsam mollitia fuga! Explicabo hic tempore delectus nihil molestiae tempora aperiam atque voluptatibus dolorem ratione, obcaecati impedit! Corporis officiis fuga maiores laudantium harum non sunt iste, a voluptas cum laboriosam vitae enim optio possimus reiciendis repellendus consequatur. Provident harum atque doloribus aspernatur quod! Aliquam molestiae eos ex qui sed excepturi doloremque nisi earum laborum, fugit distinctio eveniet, ad facilis perferendis quasi quidem natus nostrum ullam. Dignissimos ex, totam itaque sapiente laudantium, aliquam molestiae deserunt voluptate neque excepturi reiciendis accusamus nemo mollitia, nihil temporibus quidem eaque. Hic perferendis expedita, minus enim consequuntur dolorum impedit accusantium vero nulla id fugit quod dolore, quas excepturi est magnam nemo at blanditiis corrupti quaerat. Quisquam, voluptatem. Eius itaque esse optio earum delectus sed asperiores. Minima temporibus facere velit nam animi cupiditate alias? Excepturi doloremque, nobis dicta magnam beatae provident fugiat itaque nihil ex facilis! Possimus, explicabo similique quis tempore quia placeat impedit, minima aperiam esse eligendi, voluptates maxime iste. Veniam libero quia quasi, asperiores nisi assumenda quas labore alias praesentium nobis hic recusandae deleniti eius laboriosam aliquam ad repellendus voluptas. At, sit laboriosam optio tempora ad cumque neque alias quisquam possimus ut sint est architecto delectus natus quibusdam vitae veniam quis ex? Molestias natus temporibus voluptatum ducimus consequatur soluta sint exercitationem, iusto enim! Laboriosam, atque! Nobis inventore esse corporis deleniti nisi aliquid ullam magnam beatae? Adipisci magnam similique soluta suscipit minima magni accusantium culpa delectus. Id dolore repudiandae quam quas aspernatur illo sunt. Atque.
+    <div className="bg-dark-gray text-white min-h-screen p-2">
+      <Table className="min-w-full bg-gray-800 rounded-lg shadow-md">
+        <TableCaption>A list of your budgets.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="text-left p-4">Category</TableHead>
+            <TableHead className="text-left p-4">Currency</TableHead>
+            <TableHead className="text-left p-4">Start Date</TableHead>
+            <TableHead className="text-left p-4">End Date</TableHead>
+            <TableHead className="text-right p-4">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {budgets.length > 0 ? (
+            budgets.map((budget) => (
+              <TableRow key={budget.id} className="hover:bg-gray-700 hover:text-blue-600">
+                <TableCell className="p-4">{budget.category.toUpperCase()}</TableCell>
+                <TableCell className="p-4">
+                  {(() => {
+                    switch (budget.currency) {
+                      case 'usd':
+                        return '$';
+                      case 'eur':
+                        return '€';
+                      case 'pkr':
+                        return 'RS';
+                      case 'inr':
+                        return '₹';
+                      default:
+                        return budget.currency.toUpperCase();
+                    }
+                  })()} {budget.currency.toUpperCase()}
+                </TableCell>
+                <TableCell className="p-4">{formatDate(budget.startDate)}</TableCell>
+                <TableCell className="p-4">{formatDate(budget.endDate)}</TableCell>
+                <TableCell className="p-4 text-right">
+                  {(() => {
+                    switch (budget.currency) {
+                      case 'usd':
+                        return '$';
+                      case 'eur':
+                        return '€';
+                      case 'pkr':
+                        return 'RS';
+                      case 'inr':
+                        return '₹';
+                      default:
+                        return '';
+                    }
+                  })()} {budget.amount.toFixed(2)}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center p-4">No budgets available.</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default Page;

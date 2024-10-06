@@ -58,10 +58,24 @@ const [loader,setLoader] = useState(true)
           {incomes.length > 0 ? (
             incomes.map((income) => (
               <TableRow key={income._id} className="hover:bg-gray-700 hover:text-blue-600">
-                <TableCell className="p-4">{income.source}</TableCell>
-                <TableCell className="p-4">{income.currency}</TableCell>
+                <TableCell className="p-4">{income.source.toUpperCase()}</TableCell>
+                <TableCell className="p-4">{income.currency.toUpperCase()}</TableCell>
                 <TableCell className="p-4">{formatDate(income.createdAt)}</TableCell>
-                <TableCell className="p-4 text-right">${income.amount.toFixed(2)}</TableCell>
+                <TableCell className="p-4 text-right">
+                {(() => {
+                    switch (income.currency) {
+                      case 'usd':
+                        return '$';
+                      case 'eur':
+                        return '€';
+                      case 'pkr':
+                        return 'RS';
+                      case 'inr':
+                        return '₹';
+                      default:
+                        return '';
+                    }
+                  })()}{income.amount.toFixed(2)}</TableCell>
               </TableRow>
             ))
           ) : (
