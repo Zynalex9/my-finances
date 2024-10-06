@@ -13,7 +13,7 @@ export const budgetSchema = z
     amount: z
       .string()
       .refine((val) => !Number.isNaN(parseInt(val, 10)), {
-        message: "Expected number, received a string",
+        message: "Please enter a valid number",
       }),
     currency: z
       .enum(["usd", "pkr", "eur", "inr"], {
