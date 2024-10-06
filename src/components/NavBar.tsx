@@ -70,10 +70,10 @@ const NavBar = () => {
       <div className="hidden lg:flex space-x-6">
         {isSignedIn && (
           <>
-            <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
-            <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Expenses</Link>
-            <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
-            <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
+            <Link href="/" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
+            <Link href="/all/expenses" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Expenses</Link>
+            <Link href="/all/incomes" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
+            <Link href="/all/budgets" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
           </>
         )}
       </div>
@@ -88,13 +88,13 @@ const NavBar = () => {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link href={"#"}>Add Budget</Link>
+                <Link href={"/add/add-new-budget"}>Add Budget</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href={"#"}>Add Expense</Link>
+                <Link href={"/add/add-new-expense"}>Add Expense</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href={"#"}>Add Income</Link>
+                <Link href={"/add/add-new-income"}>Add Income</Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleSignOut}>
                 Sign Out
@@ -103,7 +103,7 @@ const NavBar = () => {
           </DropdownMenu>
         ) : (
           <Link
-            href="/login"
+            href="/sign-in"
             className="text-lg bg-slate-800 rounded-lg p-2 hover:bg-slate-700 transition-colors"
           >
             Sign In
@@ -117,15 +117,15 @@ const NavBar = () => {
           <div className="flex flex-col space-y-2 p-4">
             {isSignedIn && (
               <>
-                <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
-                <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Expenses</Link>
-                <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
-                <Link href="#" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
+                <Link href={"/"} className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
+                <Link href="/all/budgets" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Expenses</Link>
+                <Link href="/all/incomes" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
+                <Link href="/all/expenses" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
               </>
             )}
             {!isSignedIn && (
               <Link
-                href="/login"
+                href="/sign-in"
                 className="text-lg bg-slate-800 rounded-lg p-2 hover:bg-slate-700 transition-colors"
               >
                 Sign In
