@@ -7,7 +7,7 @@ dbConnect();
 
 export async function POST(request: NextRequest) {
   const reqBody = await request.json();
-  const { source, amount, currency, date } = reqBody;
+  const { source, amount, currency} = reqBody;
 
   try {
     const token = request.cookies.get("token");
@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
       source,
       amount,
       currency,
-      date, // Date of the income, if not provided, will use the current date
     });
 
     await newIncome.save();

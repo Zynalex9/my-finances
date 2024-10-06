@@ -21,10 +21,6 @@ const incomeSchema = new mongoose.Schema(
       enum: ["usd", "pkr", "eur", "inr"],
       required: true, // Ensure currency is required
     },
-    date: { // Changed 'Date' to 'date' for clarity
-      type: Date,
-      default: Date.now,
-    },
   },
   { timestamps: true }
 );

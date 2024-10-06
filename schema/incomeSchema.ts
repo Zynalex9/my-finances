@@ -20,5 +20,4 @@ export const incomeSchema = z.object({
       }),
     })
     .default("usd"),
-  date: dateSchema.optional(),
 });
