@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
 
     if (userTotalIncome <= 0) {
       return NextResponse.json(
-        { success: false, message: "Total income must be greater than 0." },
+        { success: false,
+           message: "Total income must be greater than 0." },
         { status: 400 }
       );
     }
