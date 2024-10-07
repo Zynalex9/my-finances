@@ -34,8 +34,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const page = () => {
   const [resBudget, setResBudget] = useState<any[]>([]);
@@ -47,35 +47,65 @@ const page = () => {
     // }
   });
   const { reset } = form;
-  async function onSubmit(data: any) {
-    console.log("form submitting");
-    try {
-      const { category } = data;
-      const singleBudget = await axios.get(
-        `/api/budget/getbudget?category=${category}`
+
+const {toast} = useToast()
+async function onSubmit(data: any) {
+  try {
+    const { category } = data;
+
+    
+    const normalizedCategory = category.toLowerCase();
+
+    const singleBudget = await axios.get(
+      `/api/budget/getbudget?category=${normalizedCategory}` // Use normalized category
+    );
+
+    if (singleBudget.status === 200) {
+      setResBudget(singleBudget.data);
+      const newBudgetID = singleBudget.data.budget._id;
+      setBudgetID(newBudgetID); // Update the state with the actual budget ID
+
+      const reqData = {
+        budgetId: newBudgetID, // Now this will be the actual budget ID
+        ...data,
+        category: normalizedCategory, // Send normalized category to the server
+      };
+console.log("reqData",reqData)
+      const expenseRequest = await axios.post(
+        "/api/expense/addexpense",
+        reqData
       );
-      if (singleBudget.status === 200) {
-        setResBudget(singleBudget.data);
-        const newBudgetID = singleBudget.data.budget._id;
-        setBudgetID(newBudgetID); // Update the state with the actual budget ID
 
-        // Create request data here AFTER the state has been updated
-        const reqData = {
-          budgetId: newBudgetID, // Now this will be the actual budget ID
-          ...data,
-        };
-        console.log(reqData);
-
-        const expenseRequest = await axios.post(
-          "/api/expense/addexpense",
-          reqData
-        );
+      if (expenseRequest.data.success) {
+        toast({
+          title: "Success!",
+          description: "Expense added successfully!",
+        });
         reset();
+      } else {
+        toast({
+          title: "Error",
+          description:
+            expenseRequest.data.message || "An error occurred during submission.",
+          variant: "destructive",
+        });
       }
-    } catch (error) {
-      console.error("Error fetching budget:", error);
+    } else {
+      toast({
+        title: "Error",
+        description: singleBudget.data.message || "Could not fetch budget.",
+        variant: "destructive",
+      });
     }
+  } catch (error: any) {
+    console.error("Error fetching or adding expense:", error);
+    toast({
+      title: "Error",
+      description: error.response?.data?.message || "An error occurred.",
+      variant: "destructive",
+    });
   }
+}
 
   return (
     <div>

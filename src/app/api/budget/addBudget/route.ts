@@ -3,15 +3,15 @@ import { dbConnect } from "../../../../../helpers/connectDB";
 import budgetModel from "../../../../../models/budgetModel.model";
 import incomeModel from "../../../../../models/incomeModel.model";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import mongoose, { Types } from "mongoose"; 
+import mongoose, { Types } from "mongoose";
 
 dbConnect();
 
 export async function POST(request: NextRequest) {
   const reqBody = await request.json();
-  const { category, amount: rawAmount, currency, startDate, endDate } = reqBody;
+  let { category, amount: rawAmount, currency, startDate, endDate } = reqBody;
   const amount = Number(rawAmount);
-
+  category = category.toLowerCase();
   try {
     const token = request.cookies.get("token");
     const userId = token?.value;
@@ -35,8 +35,7 @@ export async function POST(request: NextRequest) {
 
     if (userTotalIncome <= 0) {
       return NextResponse.json(
-        { success: false,
-           message: "Total income must be greater than 0." },
+        { success: false, message: "Total income must be greater than 0." },
         { status: 400 }
       );
     }

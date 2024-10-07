@@ -43,6 +43,10 @@ export default function AddNewBudget() {
   const form = useForm<z.infer<typeof budgetSchema>>({
     resolver: zodResolver(budgetSchema),
   });
+  const {
+    formState: { errors, isSubmitting },
+    setError,
+  } = form;
   async function onSubmit(data: z.infer<typeof budgetSchema>) {
     const formattedData = {
       ...data,
@@ -221,7 +225,9 @@ export default function AddNewBudget() {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Adding new budget..." : "Add new budget"}
+        </Button>
       </form>
     </Form>
   );

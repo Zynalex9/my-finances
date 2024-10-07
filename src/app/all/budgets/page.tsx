@@ -16,12 +16,14 @@ const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "2-digit", // Ensures two-digit month
-    day: "2-digit",   // Ensures two-digit day
+    day: "2-digit", // Ensures two-digit day
   };
-  const parts = new Intl.DateTimeFormat('en-US', options).formatToParts(new Date(dateString));
-  const month = parts.find(part => part.type === 'month')?.value;
-  const day = parts.find(part => part.type === 'day')?.value;
-  const year = parts.find(part => part.type === 'year')?.value;
+  const parts = new Intl.DateTimeFormat("en-US", options).formatToParts(
+    new Date(dateString)
+  );
+  const month = parts.find((part) => part.type === "month")?.value;
+  const day = parts.find((part) => part.type === "day")?.value;
+  const year = parts.find((part) => part.type === "year")?.value;
   return `${month}/${day}/${year}`; // Returns in MM/DD/YYYY format
 };
 
@@ -59,52 +61,69 @@ const Page = () => {
             <TableHead className="text-left p-4">Start Date</TableHead>
             <TableHead className="text-left p-4">End Date</TableHead>
             <TableHead className="text-right p-4">Amount</TableHead>
+            <TableHead className="text-right p-4">Remaining Amount</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {budgets.length > 0 ? (
             budgets.map((budget) => (
-              <TableRow key={budget.id} className="hover:bg-gray-700 hover:text-blue-600">
-                <TableCell className="p-4">{budget.category.toUpperCase()}</TableCell>
+              <TableRow
+                key={budget.id}
+                className="hover:bg-gray-700 hover:text-blue-600"
+              >
                 <TableCell className="p-4">
-                  {(() => {
-                    switch (budget.currency) {
-                      case 'usd':
-                        return '$';
-                      case 'eur':
-                        return '€';
-                      case 'pkr':
-                        return 'RS';
-                      case 'inr':
-                        return '₹';
-                      default:
-                        return budget.currency.toUpperCase();
-                    }
-                  })()} {budget.currency.toUpperCase()}
+                  {budget.category.toUpperCase()}
                 </TableCell>
-                <TableCell className="p-4">{formatDate(budget.startDate)}</TableCell>
-                <TableCell className="p-4">{formatDate(budget.endDate)}</TableCell>
+                <TableCell className="p-4">
+                  {budget.currency.toUpperCase()}
+                </TableCell>
+                <TableCell className="p-4">
+                  {formatDate(budget.startDate)}
+                </TableCell>
+                <TableCell className="p-4">
+                  {formatDate(budget.endDate)}
+                </TableCell>
                 <TableCell className="p-4 text-right">
                   {(() => {
                     switch (budget.currency) {
-                      case 'usd':
-                        return '$';
-                      case 'eur':
-                        return '€';
-                      case 'pkr':
-                        return 'RS';
-                      case 'inr':
-                        return '₹';
+                      case "usd":
+                        return "$";
+                      case "eur":
+                        return "€";
+                      case "pkr":
+                        return "RS";
+                      case "inr":
+                        return "₹";
                       default:
-                        return '';
+                        return "";
                     }
-                  })()} {budget.amount.toFixed(2)}
+                  })()}{" "}
+                  {budget.amount.toFixed(2)}
+                </TableCell>
+                <TableCell className="p-4 text-right">
+                  {(() => {
+                    switch (budget.currency) {
+                      case "usd":
+                        return "$";
+                      case "eur":
+                        return "€";
+                      case "pkr":
+                        return "RS";
+                      case "inr":
+                        return "₹";
+                      default:
+                        return "";
+                    }
+                  })()}{" "}
+                  {budget.remainingAmount.toFixed(2)}
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} className="text-center p-4">No budgets available.</TableCell>
+              <TableCell colSpan={6} className="text-center p-4">
+                No budgets available.
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
