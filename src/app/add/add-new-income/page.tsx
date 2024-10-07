@@ -10,7 +10,17 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import axios, { AxiosResponse } from "axios";
@@ -55,16 +65,17 @@ const Page = () => {
   };
 
   return (
+    <div className="bg-dark-gray text-white min-h-screen py-10">
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-lg mx-auto p-6 bg-gray-900 rounded-lg shadow-md">
         <FormField
           control={form.control}
           name="source"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Source</FormLabel>
+              <FormLabel className="text-white">Source</FormLabel>
               <FormControl>
-                <Input placeholder="Job, Freelance" {...field} />
+                <Input placeholder="Job, Freelance" className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500" {...field} />
               </FormControl>
               {errors.source && (
                 <span className="text-red-500">{errors.source.message}</span>
@@ -77,9 +88,9 @@ const Page = () => {
           name="amount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Amount</FormLabel>
+              <FormLabel className="text-white">Amount</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="$$" {...field} />
+                <Input type="number" placeholder="$$" className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500" {...field} />
               </FormControl>
               {errors.amount && (
                 <span className="text-red-500">{errors.amount.message}</span>
@@ -88,26 +99,43 @@ const Page = () => {
           )}
         />
         <FormField
-          control={form.control}
-          name="currency"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Currency</FormLabel>
-              <FormControl>
-                <Input placeholder="usd, eur, pkr, inr" {...field} />
-              </FormControl>
-              {errors.currency && (
-                <span className="text-red-500">{errors.currency.message}</span>
-              )}
-            </FormItem>
-          )}
-        />
-        <Button type="submit" disabled={isSubmitting}>
+            control={form.control}
+            name="currency"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Currency</FormLabel>
+                <FormControl>
+                  <Select
+                    {...field}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="w-[180px] bg-gray-700 text-white border border-gray-600">
+                      <SelectValue placeholder="Select an option" className="text-white" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-800 text-white">
+                      <SelectGroup>
+                        <SelectLabel>Currency</SelectLabel>
+                        <SelectItem value="usd">USD</SelectItem>
+                        <SelectItem value="eur">EUR</SelectItem>
+                        <SelectItem value="pkr">PKR</SelectItem>
+                        <SelectItem value="inr">INR</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage className="text-red-500" />
+              </FormItem>
+            )}
+          />
+        <Button type="submit" className="bg-blue-800 text-white hover:bg-slate-700" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </form>
     </Form>
+    </div>
   );
+  
 };
 
 export default Page;

@@ -165,7 +165,6 @@ const page = () => {
                     {...field}
                     onValueChange={field.onChange}
                     value={field.value}
-                    className="bg-gray-700 text-white border border-gray-600"
                   >
                     <SelectTrigger className="w-[180px] bg-gray-700 text-white border border-gray-600">
                       <SelectValue
@@ -250,9 +249,7 @@ const page = () => {
             className="bg-blue-800 text-white hover:bg-slate-700"
             disabled={isSubmitting}
           >
-            {
-              isSubmitting ? " Adding new expense... " : "Add new expense"
-            }
+            {isSubmitting ? " Adding new expense... " : "Add new expense"}
           </Button>
         </form>
       </Form>
