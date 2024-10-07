@@ -46,71 +46,77 @@ const page = () => {
     //   budgetId: "ABC"
     // }
   });
-  const { reset } = form;
+  const {
+    reset,
+    formState: { isSubmitting },
+  } = form;
 
-const {toast} = useToast()
-async function onSubmit(data: any) {
-  try {
-    const { category } = data;
+  const { toast } = useToast();
+  async function onSubmit(data: any) {
+    try {
+      const { category } = data;
 
-    
-    const normalizedCategory = category.toLowerCase();
+      const normalizedCategory = category.toLowerCase();
 
-    const singleBudget = await axios.get(
-      `/api/budget/getbudget?category=${normalizedCategory}` // Use normalized category
-    );
-
-    if (singleBudget.status === 200) {
-      setResBudget(singleBudget.data);
-      const newBudgetID = singleBudget.data.budget._id;
-      setBudgetID(newBudgetID); // Update the state with the actual budget ID
-
-      const reqData = {
-        budgetId: newBudgetID, // Now this will be the actual budget ID
-        ...data,
-        category: normalizedCategory, // Send normalized category to the server
-      };
-console.log("reqData",reqData)
-      const expenseRequest = await axios.post(
-        "/api/expense/addexpense",
-        reqData
+      const singleBudget = await axios.get(
+        `/api/budget/getbudget?category=${normalizedCategory}` // Use normalized category
       );
 
-      if (expenseRequest.data.success) {
-        toast({
-          title: "Success!",
-          description: "Expense added successfully!",
-        });
-        reset();
+      if (singleBudget.status === 200) {
+        setResBudget(singleBudget.data);
+        const newBudgetID = singleBudget.data.budget._id;
+        setBudgetID(newBudgetID); // Update the state with the actual budget ID
+
+        const reqData = {
+          budgetId: newBudgetID, // Now this will be the actual budget ID
+          ...data,
+          category: normalizedCategory, // Send normalized category to the server
+        };
+        console.log("reqData", reqData);
+        const expenseRequest = await axios.post(
+          "/api/expense/addexpense",
+          reqData
+        );
+
+        if (expenseRequest.data.success) {
+          toast({
+            title: "Success!",
+            description: "Expense added successfully!",
+          });
+          reset();
+        } else {
+          toast({
+            title: "Error",
+            description:
+              expenseRequest.data.message ||
+              "An error occurred during submission.",
+            variant: "destructive",
+          });
+        }
       } else {
         toast({
           title: "Error",
-          description:
-            expenseRequest.data.message || "An error occurred during submission.",
+          description: singleBudget.data.message || "Could not fetch budget.",
           variant: "destructive",
         });
       }
-    } else {
+    } catch (error: any) {
+      console.error("Error fetching or adding expense:", error);
       toast({
         title: "Error",
-        description: singleBudget.data.message || "Could not fetch budget.",
+        description: error.response?.data?.message || "An error occurred.",
         variant: "destructive",
       });
     }
-  } catch (error: any) {
-    console.error("Error fetching or adding expense:", error);
-    toast({
-      title: "Error",
-      description: error.response?.data?.message || "An error occurred.",
-      variant: "destructive",
-    });
   }
-}
 
   return (
-    <div>
+    <div className=" bg-dark-gray text-white min-h-screen py-10">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 max-w-lg mx-auto p-6 bg-gray-900 rounded-lg shadow-md"
+        >
           <FormField
             control={form.control}
             name="category"
@@ -118,10 +124,14 @@ console.log("reqData",reqData)
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    placeholder="shadcn"
+                    className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500"
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
+                <FormDescription className="text-gray-400"></FormDescription>
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -132,10 +142,15 @@ console.log("reqData",reqData)
               <FormItem>
                 <FormLabel>Amount</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="shadcn" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="shadcn"
+                    className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500"
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
+                <FormDescription className="text-gray-400"></FormDescription>
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -150,11 +165,15 @@ console.log("reqData",reqData)
                     {...field}
                     onValueChange={field.onChange}
                     value={field.value}
+                    className="bg-gray-700 text-white border border-gray-600"
                   >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select an option" />
+                    <SelectTrigger className="w-[180px] bg-gray-700 text-white border border-gray-600">
+                      <SelectValue
+                        placeholder="Select an option"
+                        className="text-white"
+                      />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-gray-800 text-white">
                       <SelectGroup>
                         <SelectLabel>Currency</SelectLabel>
                         <SelectItem value="usd">USD</SelectItem>
@@ -165,7 +184,7 @@ console.log("reqData",reqData)
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -176,10 +195,14 @@ console.log("reqData",reqData)
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    placeholder="shadcn"
+                    className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500"
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
+                <FormDescription className="text-gray-400"></FormDescription>
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -195,7 +218,7 @@ console.log("reqData",reqData)
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
+                          "w-[240px] pl-3 text-left font-normal bg-gray-700 text-white border border-gray-600",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -222,7 +245,15 @@ console.log("reqData",reqData)
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            className="bg-blue-800 text-white hover:bg-slate-700"
+            disabled={isSubmitting}
+          >
+            {
+              isSubmitting ? " Adding new expense... " : "Add new expense"
+            }
+          </Button>
         </form>
       </Form>
     </div>
