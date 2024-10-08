@@ -118,9 +118,9 @@ const NavBar = () => {
             {isSignedIn && (
               <>
                 <Link href={"/"} className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
-                <Link href="/all/budgets" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Expenses</Link>
+                <Link href="/all/expenses" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Expenses</Link>
                 <Link href="/all/incomes" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
-                <Link href="/all/expenses" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
+                <Link  href="/all/budgets" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
               </>
             )}
             {!isSignedIn && (
