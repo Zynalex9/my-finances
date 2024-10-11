@@ -86,15 +86,14 @@ const PieCharts = () => {
   const totalVisitors = totalIncome;
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col bg-gray-800 text-white min-h-80">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Pie Chart - Summary of Budgets</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[250px] "
         >
           <PieChart>
             <ChartTooltip
@@ -110,7 +109,7 @@ const PieCharts = () => {
               animationDuration={500}
             >
               {chartData.map((entry, index) => (
-                <Label
+                <Label 
                   key={`cell-${index}`}
                   content={({ viewBox }) => {
                     if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -120,6 +119,7 @@ const PieCharts = () => {
                           y={viewBox.cy}
                           textAnchor="middle"
                           dominantBaseline="middle"
+                          className="text-white"
                         >
                           <tspan
                             x={viewBox.cx}
@@ -150,7 +150,7 @@ const PieCharts = () => {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing a pie chart of your all budgets
         </div>
       </CardFooter>
     </Card>
