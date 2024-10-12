@@ -47,7 +47,7 @@ const PieCharts = () => {
         console.log("response.data.allExpenses", result);
 
         // Format the data for the pie chart
-        const formattedData = result.map((expense:any, index:any) => ({
+        const formattedData = result.map((expense: any, index: any) => ({
           category: expense.category,
           amount: expense.amount,
           currency: expense.currency,
@@ -57,7 +57,10 @@ const PieCharts = () => {
         setChartData(formattedData);
 
         // Calculate total expenses
-        const total = result.reduce((sum:any, expense:any) => sum + expense.amount, 0);
+        const total = result.reduce(
+          (sum: any, expense: any) => sum + expense.amount,
+          0
+        );
         setTotalExpenses(total);
 
         console.log("formattedData Pie Chart,", formattedData);
@@ -144,10 +147,8 @@ const PieCharts = () => {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing a pie chart of your expenses by category
+          <TrendingUp className="h-4 w-4" /> Visual Representation of your
+          expenses
         </div>
       </CardFooter>
     </Card>
