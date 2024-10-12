@@ -41,11 +41,9 @@ const BarCharts = () => {
       try {
         const response = await axios.get("/api/budget/getallbudgets"); // Replace with your API endpoint
         const result = response.data;
-        // Format the data for the chart
+        console.log("response.data",response.data)
         const formattedData = result.budgets.map((budget: any) => ({
-          month: new Date(budget.startDate).toLocaleString("default", {
-            month: "long",
-          }),
+          month:budget.category,
           amount: budget.amount,
           remainingAmount: budget.remainingAmount,
         }));
@@ -75,7 +73,7 @@ const BarCharts = () => {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)} // Shorten month name
+              tickFormatter={(value) => value}
             />
             <ChartTooltip
               cursor={false}

@@ -108,7 +108,7 @@ const PieCharts = () => {
               strokeWidth={5}
               animationDuration={500}
             >
-              {chartData.map((entry, index) => (
+               {chartData.map((entry, index) => (
                 <Label
                   key={`cell-${index}`}
                   content={({ viewBox }) => {
@@ -124,14 +124,14 @@ const PieCharts = () => {
                           <tspan
                             x={viewBox.cx}
                             y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold"
+                            className="text-white text-3xl font-bold" // Updated to text-white
                           >
                             {totalExpenses.toLocaleString()}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
                             y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
+                            className="text-white" // Updated to text-white
                           >
                             Total Expenses
                           </tspan>
@@ -141,6 +141,7 @@ const PieCharts = () => {
                   }}
                 />
               ))}
+              
             </Pie>
           </PieChart>
         </ChartContainer>
