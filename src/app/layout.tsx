@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        className={poppins.className}
+        className={`${poppins.className} bg-dark-gray`}
       >
         <NavBar />
         {children}
