@@ -1,6 +1,6 @@
 "use client"; // Indicates that this component is client-rendered
 
-import * as React from "react"; // Importing React
+import * as React from "react";
 import axios from "axios";
 import { TrendingUp } from "lucide-react"; // Importing an icon for the footer
 import { Label, Pie, PieChart } from "recharts"; // Importing necessary components from Recharts
@@ -20,10 +20,11 @@ import {
 } from "@/components/ui/chart"; // Importing chart-related UI components
 import { useState, useEffect } from "react";
 
-// Define a type for budget items
-interface BudgetItem {
+// Define a type for expense items
+interface ExpenseItem {
   category: string;
   amount: number;
+  currency: string;
 }
 
 // Function to generate HSL color for blue shades
@@ -35,41 +36,37 @@ const generateHSLColor = (index: number): string => {
 };
 
 const PieCharts = () => {
-  const [chartData, setChartData] = useState<BudgetItem[]>([]);
-  const [totalIncome, setTotalIncome] = useState<number>(0);
+  const [chartData, setChartData] = useState<ExpenseItem[]>([]);
+  const [totalExpenses, setTotalExpenses] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/budget/getallbudgets");
-        const result: BudgetItem[] = response.data.budgets;
+        const response = await axios.get("/api/expense/getexpenses");
+        const result = response.data.allExpenses;
+        console.log("response.data.allExpenses", result);
 
-        // Update the formattedData to include colors dynamically
-        const formattedData = result.map((budget, index) => ({
-          category: budget.category,
-          amount: budget.amount,
+        // Format the data for the pie chart
+        const formattedData = result.map((expense:any, index:any) => ({
+          category: expense.category,
+          amount: expense.amount,
+          currency: expense.currency,
           fill: generateHSLColor(index), // Generate HSL color for each category
         }));
 
         setChartData(formattedData);
-        console.log("formattedData,", formattedData);
-      } catch (error) {
-        console.error("Error fetching budget data:", error);
-      }
-    };
 
-    const totalBudgetAmount = async () => {
-      try {
-        const response = await axios.get("/api/budget/totalbudget");
-        const totalIncome = response.data.totalIncome;
-        setTotalIncome(totalIncome);
+        // Calculate total expenses
+        const total = result.reduce((sum:any, expense:any) => sum + expense.amount, 0);
+        setTotalExpenses(total);
+
+        console.log("formattedData Pie Chart,", formattedData);
       } catch (error) {
-        console.error("Error fetching budget data:", error);
+        console.error("Error fetching expense data:", error);
       }
     };
 
     fetchData();
-    totalBudgetAmount();
   }, []);
 
   const description = "A donut chart with text";
@@ -83,12 +80,12 @@ const PieCharts = () => {
     other: { label: "Other", color: "hsl(var(--chart-5))" },
   } satisfies ChartConfig;
 
-  const totalVisitors = totalIncome;
+  const totalVisitors = totalExpenses;
 
   return (
     <Card className="flex flex-col bg-gray-800 text-white min-h-80">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Summary of Budgets</CardTitle>
+        <CardTitle>Pie Chart - Summary of Expenses</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -109,7 +106,7 @@ const PieCharts = () => {
               animationDuration={500}
             >
               {chartData.map((entry, index) => (
-                <Label 
+                <Label
                   key={`cell-${index}`}
                   content={({ viewBox }) => {
                     if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -126,14 +123,14 @@ const PieCharts = () => {
                             y={viewBox.cy}
                             className="fill-foreground text-3xl font-bold"
                           >
-                            {totalIncome.toLocaleString()}
+                            {totalExpenses.toLocaleString()}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
                             y={(viewBox.cy || 0) + 24}
                             className="fill-muted-foreground"
                           >
-                            Total Budget
+                            Total Expenses
                           </tspan>
                         </text>
                       );
@@ -150,11 +147,11 @@ const PieCharts = () => {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing a pie chart of your all budgets
+          Showing a pie chart of your expenses by category
         </div>
       </CardFooter>
     </Card>
   );
 };
 
-export default PieCharts; // Default export of the PieCharts component
+export default PieCharts;

@@ -36,7 +36,7 @@ const TotalIncome = () => {
   };
 
   return (
-    <div className="w-1/3 text-white border bg-gray-800 py-8 px-12 flex flex-col justify-around gap-8 m-1 rounded-lg h-80 hover:shadow-2xl transition-shadow	 ">
+    <div className="w-full mr-5 md:mx-0 md:w-1/3 text-white border bg-gray-800 py-8 px-12 flex flex-col justify-around gap-8 m-1 rounded-lg md:h-80 hover:shadow-2xl transition-shadow	 ">
       <div className="section-header">
         <h1 className="text-3xl">Balance</h1>
       </div>

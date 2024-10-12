@@ -21,7 +21,7 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
-const Page = () => {
+const AllIncomes = () => {
   const [incomes, setIncomes] = useState<any[]>([]);
 const [loader,setLoader] = useState(true)
   async function getIncomes() {
@@ -89,4 +89,4 @@ const [loader,setLoader] = useState(true)
   );
 };
 
-export default Page;
+export default AllIncomes;

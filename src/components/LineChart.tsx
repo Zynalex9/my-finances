@@ -19,51 +19,52 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const LineCharts = () => {
-  const [chartData, setChartData] = useState([]);
+  // const [chartData, setChartData] = useState([]);
   const [totalIncome, setTotalIncome] = useState<number>(0);
 
-  useEffect(() => {
-      const fetchIncomes = async () => {
-          try {
-              const response = await axios.get("/api/income/getincomes");
-              const result = response.data;
+  // useEffect(() => {
+  //     const fetchIncomes = async () => {
+  //         try {
+  //             const response = await axios.get("/api/income/getincomes");
+  //             const result = response.data;
   
-              // Format the data for the chart
-              const formattedData = result.incomes.map((income: any) => ({
-                  month: new Date(income.date).toLocaleString("default", {
-                      month: "long",
-                  }),
-                  amount: income.amount,
-                  source: income.source,
-              }));
+  //             // Format the data for the chart
+  //             const formattedData = result.incomes.map((income: any) => ({
+  //                 month: new Date(income.date).toLocaleString("default", {
+  //                     month: "long",
+  //                 }),
+  //                 amount: income.amount,
+  //                 source: income.source,
+  //             }));
   
-              const totalIncome = formattedData.reduce((total:any, income:any) => total + income.amount, 0);
-              setTotalIncome(totalIncome);
+  //             const totalIncome = formattedData.reduce((total:any, income:any) => total + income.amount, 0);
+  //             setTotalIncome(totalIncome);
   
-              // Assuming you need to display data per month for the chart
+  //             // Assuming you need to display data per month for the chart
          
   
-              setChartData(formattedData); // Update the chart data state
+  //             setChartData(formattedData); // Update the chart data state
   
-              console.log("Income result", result);
-              console.log("Formatted Data", formattedData);
-          } catch (error) {
-              console.error("Error fetching budget data:", error);
-          }
-      };
+  //             console.log("Income result", result);
+  //             console.log("Formatted Data", formattedData);
+  //         } catch (error) {
+  //             console.error("Error fetching budget data:", error);
+  //         }
+  //     };
   
-      fetchIncomes();
-  }, []);
+  //     fetchIncomes();
+  // }, []);
   
   const description = "A multiple line chart";
-  //   const chartData = [
-  //     { month: "January", desktop: 186, mobile: 80 },
-  //     { month: "February", desktop: 305, mobile: 200 },
-  //     { month: "March", desktop: 237, mobile: 120 },
-  //     { month: "April", desktop: 73, mobile: 190 },
-  //     { month: "May", desktop: 209, mobile: 130 },
-  //     { month: "June", desktop: 214, mobile: 140 },
-  //   ];
+  const chartData = [
+    { month: "January", desktop: 186, mobile: 80 },
+    { month: "February", desktop: 305, mobile: 200 },
+    { month: "March", desktop: 237, mobile: 120 },
+    { month: "April", desktop: 73, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "June", desktop: 214, mobile: 140 },
+  ]
+  
   const chartConfig = {
     desktop: {
       label: "Desktop",
@@ -71,9 +72,9 @@ const LineCharts = () => {
     },
     mobile: {
       label: "Mobile",
-      color: "hsl(var(--chart-4))",
+      color: "hsl(var(--chart-2))",
     },
-  } satisfies ChartConfig;
+  } satisfies ChartConfig
   return (
     <Card>
       <CardHeader>
@@ -129,7 +130,7 @@ const LineCharts = () => {
         </div>
       </CardFooter>
     </Card>
-  );
+  )
 };
 
 export default LineCharts;

@@ -24,11 +24,11 @@ import {
 const chartConfig = {
   amount: {
     label: "Budget Amount",
-    color: "hsl(var(--chart-1))",
+    color: "#2563EB",
   },
   remainingAmount: {
     label: "Remaining Amount",
-    color: "hsl(var(--chart-2))",
+    color: "#5EA4F5",
   },
 } satisfies ChartConfig;
 
