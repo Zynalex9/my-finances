@@ -1,6 +1,8 @@
 "use client";
+
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { LabelList, RadialBar, RadialBarChart } from "recharts";
+
 import {
   Card,
   CardContent,
@@ -15,122 +17,87 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useState, useEffect } from "react";
-import axios from "axios";
 
 const LineCharts = () => {
-  // const [chartData, setChartData] = useState([]);
-  const [totalIncome, setTotalIncome] = useState<number>(0);
+  const description = "A radial chart with a label";
 
-  // useEffect(() => {
-  //     const fetchIncomes = async () => {
-  //         try {
-  //             const response = await axios.get("/api/income/getincomes");
-  //             const result = response.data;
-  
-  //             // Format the data for the chart
-  //             const formattedData = result.incomes.map((income: any) => ({
-  //                 month: new Date(income.date).toLocaleString("default", {
-  //                     month: "long",
-  //                 }),
-  //                 amount: income.amount,
-  //                 source: income.source,
-  //             }));
-  
-  //             const totalIncome = formattedData.reduce((total:any, income:any) => total + income.amount, 0);
-  //             setTotalIncome(totalIncome);
-  
-  //             // Assuming you need to display data per month for the chart
-         
-  
-  //             setChartData(formattedData); // Update the chart data state
-  
-  //             console.log("Income result", result);
-  //             console.log("Formatted Data", formattedData);
-  //         } catch (error) {
-  //             console.error("Error fetching budget data:", error);
-  //         }
-  //     };
-  
-  //     fetchIncomes();
-  // }, []);
-  
-  const description = "A multiple line chart";
   const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
-  ]
-  
+    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+    { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
+    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+    { browser: "other", visitors: 90, fill: "var(--color-other)" },
+  ];
+
   const chartConfig = {
-    desktop: {
-      label: "Desktop",
+    visitors: {
+      label: "Visitors",
+    },
+    chrome: {
+      label: "Chrome",
       color: "hsl(var(--chart-1))",
     },
-    mobile: {
-      label: "Mobile",
+    safari: {
+      label: "Safari",
       color: "hsl(var(--chart-2))",
     },
-  } satisfies ChartConfig
+    firefox: {
+      label: "Firefox",
+      color: "hsl(var(--chart-3))",
+    },
+    edge: {
+      label: "Edge",
+      color: "hsl(var(--chart-4))",
+    },
+    other: {
+      label: "Other",
+      color: "hsl(var(--chart-5))",
+    },
+  } satisfies ChartConfig;
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Line Chart - Multiple</CardTitle>
+    <Card className="flex flex-col bg-gray-800 text-white">
+      <CardHeader className="items-center pb-0">
+        <CardTitle>Radial Chart - Label</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <LineChart
-            accessibilityLayer
+      <CardContent className="flex-1 pb-0">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
+          <RadialBarChart
             data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
+            startAngle={-90}
+            endAngle={380}
+            innerRadius={30}
+            outerRadius={110}
           >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel nameKey="browser" />}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Line
-              dataKey="desktop"
-              type="monotone"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              dataKey="mobile"
-              type="monotone"
-              stroke="var(--color-mobile)"
-              strokeWidth={2}
-              dot={false}
-            />
-          </LineChart>
+            <RadialBar dataKey="visitors" background>
+              <LabelList
+                position="insideStart"
+                dataKey="browser"
+                className="fill-white capitalize mix-blend-luminosity"
+                fontSize={11}
+              />
+            </RadialBar>
+          </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              Showing total visitors for the last 6 months
-            </div>
-          </div>
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="flex items-center gap-2 font-medium leading-none">
+          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+        </div>
+        <div className="leading-none text-muted-foreground">
+          Showing total visitors for the last 6 months
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 };
 
 export default LineCharts;

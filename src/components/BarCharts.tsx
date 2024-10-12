@@ -43,7 +43,7 @@ const BarCharts = () => {
         const result = response.data;
         console.log("response.data",response.data)
         const formattedData = result.budgets.map((budget: any) => ({
-          month:budget.category,
+          month:budget.category.toUpperCase(),
           amount: budget.amount,
           remainingAmount: budget.remainingAmount,
         }));
