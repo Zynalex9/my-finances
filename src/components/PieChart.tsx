@@ -31,7 +31,7 @@ interface ExpenseItem {
 const generateHSLColor = (index: number): string => {
   const hue = 210; // Hue for blue
   const saturation = 70; // Saturation for vibrancy
-  const lightness = 40 + (index % 6) * 5; // Vary lightness for different shades
+  const lightness = 40 + (index % 6) * 10; // Vary lightness for different shades
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 };
 
