@@ -11,20 +11,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 
 const NavBar = () => {
-  const [displayName, setDisplayName] = useState(""); // State for user display name
-  const [isSignedIn, setIsSignedIn] = useState(false); // State for sign-in status
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown visibility
+  const [displayName, setDisplayName] = useState("");
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSignOut = async () => {
     try {
       await axios.post("/api/user/sign-out");
-      setIsSignedIn(false); // Update sign-in status
-      setDisplayName(""); // Reset display name
-      router.replace("/sign-in"); // Redirect to sign-in page
+      setIsSignedIn(false);
+      setDisplayName("");
+      router.replace("/sign-in");
     } catch (error) {
       console.error("Failed to sign out:", error);
     }
@@ -32,48 +34,90 @@ const NavBar = () => {
 
   async function fetchUser() {
     try {
+      setLoading(true);
       const response = await axios.get("/api/user/getuser");
       if (response.data.user) {
-        setDisplayName(response.data.user.displayName); // Set display name if user exists
-        setIsSignedIn(true); // User is signed in
+        setDisplayName(response.data.user.displayName);
+        setIsSignedIn(true);
+        setLoading(false);
       } else {
-        setDisplayName(""); // Reset display name if user is not found
-        setIsSignedIn(false); // User is not signed in
+        setDisplayName("");
+        setIsSignedIn(false);
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       console.error("Failed to fetch user:", error);
-      setIsSignedIn(false); // Handle error by setting user as not signed in
+      setIsSignedIn(false);
     }
   }
 
   useEffect(() => {
-    fetchUser(); // Fetch user data on component mount
+    fetchUser();
   }, []);
 
   const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev); // Toggle dropdown visibility
+    setIsDropdownOpen((prev) => !prev);
   };
+
+  if (loading) {
+    return (
+      <nav className="bg-dark-gray text-white w-full flex justify-between items-center p-4 shadow-md relative">
+        <div className="flex items-center space-x-20">
+          <Skeleton className="w-32 h-8" />
+        </div>
+        <div className="hidden lg:flex space-x-6">
+          <Skeleton className="w-24 h-6" />
+          <Skeleton className="w-24 h-6" />
+          <Skeleton className="w-24 h-6" />
+        </div>
+        <div className="flex items-center border-l-2 border-slate-800">
+          <Skeleton className="w-20 h-8" />
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-dark-gray text-white w-full flex justify-between items-center p-4 shadow-md relative">
       <div className="flex items-center space-x-20">
         <h2 className="text-xl font-bold">Logo</h2>
-        {/* Menu Button for Small Screens */}
-        <div className="block lg:hidden ">
+        <div className="block lg:hidden">
           <button onClick={toggleDropdown} className="text-white">
-            <span className="text-xl "><h1>Menu</h1></span>
+            <span className="text-xl">
+              <h1>Menu</h1>
+            </span>
           </button>
         </div>
       </div>
 
-      {/* Links for Large Screens */}
       <div className="hidden lg:flex space-x-6">
         {isSignedIn && (
           <>
-            <Link href="/" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
-            <Link href="/all/expenses" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Expenses</Link>
-            <Link href="/all/incomes" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
-            <Link href="/all/budgets" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
+            <Link
+              href="/"
+              className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/all/expenses"
+              className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
+            >
+              Expenses
+            </Link>
+            <Link
+              href="/all/incomes"
+              className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
+            >
+              All Incomes
+            </Link>
+            <Link
+              href="/all/budgets"
+              className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
+            >
+              All Budgets
+            </Link>
           </>
         )}
       </div>
@@ -82,7 +126,7 @@ const NavBar = () => {
         {isSignedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger className="text-lg bg-slate-800 rounded-lg p-2">
-              {displayName.toUpperCase()} {/* Display name in uppercase */}
+              {displayName.toUpperCase()}
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -111,16 +155,35 @@ const NavBar = () => {
         )}
       </div>
 
-      {/* Dropdown Menu for Small Screens */}
       {isDropdownOpen && (
         <div className="absolute top-16 left-0 w-full bg-dark-gray z-50">
           <div className="flex flex-col space-y-2 p-4">
             {isSignedIn && (
               <>
-                <Link href={"/"} className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">Dashboard</Link>
-                <Link href="/all/expenses" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Expenses</Link>
-                <Link href="/all/incomes" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Incomes</Link>
-                <Link  href="/all/budgets" className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md">All Budgets</Link>
+                <Link
+                  href={"/"}
+                  className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/all/expenses"
+                  className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
+                >
+                  All Expenses
+                </Link>
+                <Link
+                  href="/all/incomes"
+                  className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
+                >
+                  All Incomes
+                </Link>
+                <Link
+                  href="/all/budgets"
+                  className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
+                >
+                  All Budgets
+                </Link>
               </>
             )}
             {!isSignedIn && (
