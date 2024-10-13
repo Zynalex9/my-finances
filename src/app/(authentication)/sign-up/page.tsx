@@ -13,7 +13,7 @@ import {
 import { toast, useToast } from "@/hooks/use-toast";
 import { signUpSchema } from "../../../../schema/signUpSchema";
 import { useRouter } from "next/navigation";
-
+import Link from "next/link";
 const SignUp = () => {
   const router = useRouter();
   const methods = useForm({
@@ -37,9 +37,7 @@ const SignUp = () => {
   return (
     <div className="bg-gray-900 h-screen w-full flex items-center justify-center p-4">
       <div className="bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 space-y-4">
-        <h1 className="text-3xl font-bold text-center text-white">
-          Sign Up
-        </h1>
+        <h1 className="text-3xl font-bold text-center text-white">Sign Up</h1>
 
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4">
@@ -121,7 +119,9 @@ const SignUp = () => {
               name="currency"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-200">Preferred Currency</FormLabel>
+                  <FormLabel className="text-gray-200">
+                    Preferred Currency
+                  </FormLabel>
                   <input
                     {...field}
                     type="text"
@@ -141,6 +141,15 @@ const SignUp = () => {
             >
               Sign Up
             </Button>
+            <div className="section text-center text-white">
+              <p>
+                Already on MyFinance?{" "}
+                <Link href={"/sign-in"} className="text-blue-600 font-bold">
+                  {" "}
+                  Sign In
+                </Link>
+              </p>
+            </div>
           </form>
         </FormProvider>
       </div>

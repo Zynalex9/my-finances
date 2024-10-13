@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // Define the schema for the form validation
 const FormSchema = z.object({
@@ -35,9 +36,12 @@ export default function LoginForm() {
       password: "",
     },
   });
-  const { formState: { errors, isSubmitting }, setError } = form;
+  const {
+    formState: { errors, isSubmitting },
+    setError,
+  } = form;
   const router = useRouter();
-  
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       const response = await axios.post("/api/user/sign-in", data);
@@ -50,7 +54,7 @@ export default function LoginForm() {
       if (axios.isAxiosError(error) && error.response) {
         // Check if the error has a response and handle accordingly
         const errorMessage = error.response.data.message;
-        
+
         if (errorMessage === "User not found. Invalid email") {
           setError("email", { type: "manual", message: errorMessage });
         } else if (errorMessage === "Invalid Password") {
@@ -122,6 +126,11 @@ export default function LoginForm() {
             >
               {isSubmitting ? "Processing...." : "Sign in"}
             </Button>
+            <div className="section text-center text-white">
+              <p>
+                First time on MyFinance? <Link href={"/sign-up"} className="text-blue-600 font-bold"> Sign Up</Link>
+              </p>
+            </div>
           </form>
         </Form>
       </div>
