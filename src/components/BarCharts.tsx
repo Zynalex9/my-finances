@@ -86,30 +86,45 @@ const BarCharts = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="dashed" />}
-            />
-            <Bar dataKey="amount" fill="var(--color-amount)" radius={4} />
-            <Bar
-              dataKey="remainingAmount"
-              fill="var(--color-remainingAmount)"
-              radius={4}
-            />
-          </BarChart>
-        </ChartContainer>
+        {chartData.length > 0 ? (
+          <ChartContainer config={chartConfig}>
+            <BarChart data={chartData}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(value) => value}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="dashed" />}
+              />
+              <Bar dataKey="amount" fill="var(--color-amount)" radius={4} />
+              <Bar
+                dataKey="remainingAmount"
+                fill="var(--color-remainingAmount)"
+                radius={4}
+              />
+            </BarChart>
+          </ChartContainer>
+        ) : (
+          <div className="text-4xl text-center mt-12 bg-blue-800 rounded-lg text-slate-200">
+            No Budgets Yet
+          </div>
+        )}
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm"></CardFooter>
+      {chartData.length > 0 ? (
+        <CardFooter className="flex-col gap-2 text-sm">
+          <div className="flex items-center gap-2 font-medium leading-none">
+            <TrendingUp className="h-4 w-4" /> Visual Representation of your
+            Budgets
+          </div>
+        </CardFooter>
+      ) : (
+        <div className="flex items-center gap-2 font-medium leading-none"></div>
+      )}
     </Card>
   );
 };
