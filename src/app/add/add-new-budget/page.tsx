@@ -46,6 +46,7 @@ export default function AddNewBudget() {
     formState: { errors, isSubmitting },
     setError,
   } = form;
+
   async function onSubmit(data: z.infer<typeof budgetSchema>) {
     const formattedData = {
       ...data,
@@ -65,19 +66,27 @@ export default function AddNewBudget() {
         toast({
           title: `${data.category} is added as a new budget`,
         });
-        router.replace("/"); // Redirect or refresh page
+        router.replace("/"); 
       } else {
-        // If there is an error, show error toast with the message
         toast({
           title: `Error adding budget`,
-          description: response.data.message, // Server-side error message
+          description: response.data.message || "An error occurred.",
           variant: "destructive",
         });
       }
     } catch (error: any) {
+      const message = error.response?.data?.message || error.message || "An unexpected error occurred.";
+      if (error.response?.data?.errors) {
+        Object.keys(error.response.data.errors).forEach((key) => {
+          setError(key as any, {
+            type: "manual",
+            message: error.response.data.errors[key].message,
+          });
+        });
+      }
       toast({
         title: `Error adding budget`,
-        description: error.message,
+        description: message,
       });
     }
   }
@@ -86,7 +95,6 @@ export default function AddNewBudget() {
     <div className="bg-dark-gray text-white min-h-screen py-10">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 mx-auto space-y-6 p-6 bg-gray-900 rounded-lg shadow-md">
-          
           {/* Category */}
           <FormField
             control={form.control}
@@ -95,17 +103,17 @@ export default function AddNewBudget() {
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="food, rent" 
-                    className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500" 
-                    {...field} 
+                  <Input
+                    placeholder="food, rent"
+                    className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500"
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
-  
+
           {/* Amount */}
           <FormField
             control={form.control}
@@ -114,18 +122,18 @@ export default function AddNewBudget() {
               <FormItem>
                 <FormLabel>Amount</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="number" 
-                    placeholder="Enter amount" 
-                    className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500" 
-                    {...field} 
+                  <Input
+                    type="number"
+                    placeholder="Enter amount"
+                    className="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:ring focus:ring-blue-500"
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
-  
+
           {/* Currency */}
           <FormField
             control={form.control}
@@ -157,7 +165,7 @@ export default function AddNewBudget() {
               </FormItem>
             )}
           />
-  
+
           {/* Start Date */}
           <FormField
             control={form.control}
@@ -190,7 +198,7 @@ export default function AddNewBudget() {
               </FormItem>
             )}
           />
-  
+
           {/* End Date */}
           <FormField
             control={form.control}
@@ -223,7 +231,7 @@ export default function AddNewBudget() {
               </FormItem>
             )}
           />
-  
+
           <Button type="submit" disabled={isSubmitting} className="bg-blue-800 text-white hover:bg-slate-700">
             {isSubmitting ? "Adding new budget..." : "Add new budget"}
           </Button>
@@ -231,5 +239,4 @@ export default function AddNewBudget() {
       </Form>
     </div>
   );
-  
 }
