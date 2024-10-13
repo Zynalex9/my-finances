@@ -19,6 +19,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"; // Importing chart-related UI components
 import { useState, useEffect } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 // Define a type for expense items
 interface ExpenseItem {
@@ -38,10 +39,12 @@ const generateHSLColor = (index: number): string => {
 const PieCharts = () => {
   const [chartData, setChartData] = useState<ExpenseItem[]>([]);
   const [totalExpenses, setTotalExpenses] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await axios.get("/api/expense/getexpenses");
         const result = response.data.allExpenses;
         console.log("response.data.allExpenses", result);
@@ -62,10 +65,11 @@ const PieCharts = () => {
           0
         );
         setTotalExpenses(total);
-
+        setLoading(false);
         console.log("formattedData Pie Chart,", formattedData);
       } catch (error) {
         console.error("Error fetching expense data:", error);
+        setLoading(true);
       }
     };
 
@@ -84,7 +88,24 @@ const PieCharts = () => {
   } satisfies ChartConfig;
 
   const totalVisitors = totalExpenses;
-
+  if (loading) {
+    return (
+      <Card className="flex flex-col bg-gray-800 text-white min-h-80">
+        <CardHeader className="items-center pb-0">
+          <CardTitle>Pie Chart - Summary of Expenses</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-1 pb-0">
+          <Skeleton className="w-full h-52 bg-gray-700 rounded-2xl my-4" />
+        </CardContent>
+        <CardFooter className="flex-col gap-2 text-sm">
+          <div className="flex items-center gap-2 font-medium leading-none">
+            <TrendingUp className="h-4 w-4" /> Visual Representation of your
+            expenses
+          </div>
+        </CardFooter>
+      </Card>
+    );
+  }
   return (
     <Card className="flex flex-col bg-gray-800 text-white min-h-80">
       <CardHeader className="items-center pb-0">
@@ -108,7 +129,7 @@ const PieCharts = () => {
               strokeWidth={5}
               animationDuration={500}
             >
-               {chartData.map((entry, index) => (
+              {chartData.map((entry, index) => (
                 <Label
                   key={`cell-${index}`}
                   content={({ viewBox }) => {
@@ -141,7 +162,6 @@ const PieCharts = () => {
                   }}
                 />
               ))}
-              
             </Pie>
           </PieChart>
         </ChartContainer>
