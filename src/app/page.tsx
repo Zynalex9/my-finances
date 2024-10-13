@@ -6,7 +6,7 @@ import AllIncomes from "./all/incomes/page";
 export default function Home() {
   return (
     <>
-      <main className="bg-dark-gray min-h-screen px-4">
+      <main className="bg-dark-gray px-4">
         <div className="top-section flex flex-col md:flex-row gap-5 mb-8">
           <TotalIncome />
           <div className="div-2  min-h-44 w-full md:w-1/3">

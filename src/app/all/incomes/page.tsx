@@ -48,7 +48,7 @@ const AllIncomes = () => {
   // Display skeleton while loading
   if (loader) {
     return (
-      <div className="bg-dark-gray text-white min-h-screen p-4">
+      <div className="bg-dark-gray text-white  p-4" >
         <Table className="min-w-full bg-gray-800 rounded-lg shadow-md">
           <TableCaption>Loading incomes...</TableCaption>
           <TableHeader>

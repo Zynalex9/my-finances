@@ -153,7 +153,7 @@ const LineCharts = () => {
           </ChartContainer>
         ) : (
           <div className="text-4xl text-center my-12 bg-blue-800 rounded-lg text-slate-200">
-            No Budgets Yet
+            No Incomes Yet
           </div>
         )}
       </CardContent>

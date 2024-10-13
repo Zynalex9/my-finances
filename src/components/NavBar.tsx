@@ -81,7 +81,7 @@ const NavBar = () => {
   return (
     <nav className="bg-dark-gray text-white w-full flex justify-between items-center p-4 shadow-md relative">
       <div className="flex items-center space-x-20">
-        <h2 className="text-xl font-bold">Logo</h2>
+        <h2 className="text-xl font-bold bg-slate-800 p-4"><Link href={'/'}>MyFinance</Link> </h2>
         <div className="block lg:hidden">
           <button onClick={toggleDropdown} className="text-white">
             <span className="text-xl">
