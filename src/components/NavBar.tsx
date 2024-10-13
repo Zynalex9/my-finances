@@ -64,8 +64,7 @@ const NavBar = () => {
     return (
       <nav className="bg-dark-gray text-white w-full flex justify-between items-center p-4 shadow-md relative">
         <div className="flex items-center space-x-20">
-          <Skeleton className="w-32 h-8" />
-        </div>
+          <Skeleton className="w-32 h-8" /></div>
         <div className="hidden lg:flex space-x-6">
           <Skeleton className="w-24 h-6" />
           <Skeleton className="w-24 h-6" />
@@ -80,8 +79,13 @@ const NavBar = () => {
 
   return (
     <nav className="bg-dark-gray text-white w-full flex justify-between items-center p-4 shadow-md relative">
-      <div className="flex items-center space-x-20">
-        <h2 className="text-xl font-bold bg-slate-800 p-4"><Link href={'/'}>MyFinance</Link> </h2>
+      <div className="flex items-center justify-between w-full lg:w-auto space-x-4">
+        {/* MyFinance Logo */}
+        <h2 className="text-xl font-bold bg-slate-800 p-2 rounded-lg">
+          <Link href="/">MyFinance</Link>
+        </h2>
+
+        {/* Menu button for small screens */}
         <div className="block lg:hidden">
           <button onClick={toggleDropdown} className="text-white">
             <span className="text-xl">
@@ -91,6 +95,7 @@ const NavBar = () => {
         </div>
       </div>
 
+      {/* Links - only visible on large screens */}
       <div className="hidden lg:flex space-x-6">
         {isSignedIn && (
           <>
@@ -122,7 +127,8 @@ const NavBar = () => {
         )}
       </div>
 
-      <div className="flex items-center border-l-2 border-slate-800">
+      {/* Sign In / Account Options */}
+      <div className="flex items-center border-l-4 border-slate-800 pl-2 space-x-2">
         {isSignedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger className="text-lg bg-slate-800 rounded-lg p-2">
@@ -132,13 +138,13 @@ const NavBar = () => {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link href={"/add/add-new-budget"}>Add Budget</Link>
+                <Link href="/add/add-new-budget">Add Budget</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href={"/add/add-new-expense"}>Add Expense</Link>
+                <Link href="/add/add-new-expense">Add Expense</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href={"/add/add-new-income"}>Add Income</Link>
+                <Link href="/add/add-new-income">Add Income</Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleSignOut}>
                 Sign Out
@@ -155,13 +161,14 @@ const NavBar = () => {
         )}
       </div>
 
+      {/* Dropdown menu for small screens */}
       {isDropdownOpen && (
         <div className="absolute top-16 left-0 w-full bg-dark-gray z-50">
           <div className="flex flex-col space-y-2 p-4">
             {isSignedIn && (
               <>
                 <Link
-                  href={"/"}
+                  href="/"
                   className="hover:text-white transition-colors p-4 hover:bg-slate-800 rounded-md"
                 >
                   Dashboard

@@ -31,10 +31,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        className={`${poppins.className} bg-dark-gray`}
-      >
-        <NavBar />
+        className={`${poppins.className} bg-dark-gray pb-4`}>
+       <NavBar />
         {children}
         <Toaster />
       </body>

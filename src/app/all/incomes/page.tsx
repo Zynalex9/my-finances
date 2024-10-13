@@ -48,7 +48,7 @@ const AllIncomes = () => {
   // Display skeleton while loading
   if (loader) {
     return (
-      <div className="bg-dark-gray text-white  p-4" >
+      <div className="bg-dark-gray text-white p-4" >
         <Table className="min-w-full bg-gray-800 rounded-lg shadow-md">
           <TableCaption>Loading incomes...</TableCaption>
           <TableHeader>
@@ -84,7 +84,7 @@ const AllIncomes = () => {
 
   // Render incomes once loaded
   return (
-    <div className="bg-dark-gray text-white min-h-screen p-2">
+    <div className="bg-dark-gray text-white p-2">
       <Table className="min-w-full bg-gray-800 rounded-lg shadow-md">
         <TableCaption>A list of your incomes.</TableCaption>
         <TableHeader>
