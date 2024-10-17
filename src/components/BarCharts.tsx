@@ -32,7 +32,11 @@ const chartConfig = {
     color: "#5EA4F5",
   },
 } satisfies ChartConfig;
-
+interface Budget{
+  amount:number,
+  category:string,
+  remainingAmount:number
+}
 const BarCharts = () => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,7 +48,7 @@ const BarCharts = () => {
         const response = await axios.get("/api/budget/getallbudgets"); // Replace with your API endpoint
         const result = response.data;
         console.log("response.data", response.data);
-        const formattedData = result.budgets.map((budget: any) => ({
+        const formattedData = result.budgets.map((budget: Budget) => ({
           month: budget.category.toUpperCase(),
           amount: budget.amount,
           remainingAmount: budget.remainingAmount,

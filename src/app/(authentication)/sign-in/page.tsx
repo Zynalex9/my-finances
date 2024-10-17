@@ -37,14 +37,14 @@ export default function LoginForm() {
     },
   });
   const {
-    formState: { errors, isSubmitting },
+    formState: {isSubmitting },
     setError,
   } = form;
   const router = useRouter();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const response = await axios.post("/api/user/sign-in", data);
+      await axios.post("/api/user/sign-in", data);
       router.replace("/");
       toast({
         title: "Logged in successfully",

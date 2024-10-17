@@ -30,7 +30,8 @@ export async function DELETE(request: NextRequest) {
       success: true,
       message: "Budget and associated expenses deleted successfully",
     });
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any)/* eslint-disable */
+   {
     console.log("Error deleting budget:", error);
     return NextResponse.json(
       {

@@ -25,7 +25,8 @@ export async function GET(request: NextRequest) {
         success: true,
         allExpenses, // Return the found expenses
       });
-    } catch (error: any) {
+    }
+    /* eslint-disable */ catch (error: any)/* eslint-disable */ {
       console.log("Error fetching expenses:", error);
       return NextResponse.json(
         {

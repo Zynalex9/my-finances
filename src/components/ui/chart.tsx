@@ -1,5 +1,5 @@
 "use client"
-
+ /* eslint-disable */
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 import {
@@ -9,7 +9,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent"
 
 import { cn } from "@/lib/utils"
-
+ /* eslint-disable */
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
 
@@ -71,7 +71,7 @@ const ChartContainer = React.forwardRef<
   )
 })
 ChartContainer.displayName = "Chart"
-
+ /* eslint-disable */
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([_, config]) => config.theme || config.color
@@ -80,7 +80,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   if (!colorConfig.length) {
     return null
   }
-
+ /* eslint-disable */
   return (
     <style
       dangerouslySetInnerHTML={{

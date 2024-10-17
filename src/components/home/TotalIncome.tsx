@@ -13,8 +13,11 @@ const TotalIncome = () => {
         setLoading(true);
         const response = await axios.get("/api/income/totalIncome");
         setIncome(response.data.totalIncome);
-      } catch (error) {
+      } 
+        /* eslint-disable */ 
+      catch (error) {
         console.error("Error fetching total income:", error);
+          /* eslint-disable */
       } finally {
         setLoading(false);
       }

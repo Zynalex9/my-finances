@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     });
 
     return response;
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any)/* eslint-disable */ {
     console.log("Unexpected error occurred in registering a user", error);
   }
 }

@@ -24,21 +24,20 @@ import { Skeleton } from "./ui/skeleton";
 interface income {
   amount: number;
   createdAt: Date;
-  currency: String;
+  currency: string;
   date: Date;
-  source: String;
+  source: string;
   updatedAt: Date;
   userId: string;
   __v: number;
-  _id: String;
+  _id: string;
 }
 interface IncomesData {
-  Income: String;
+  Income: string;
   amount: number;
-  fill: String;
+  fill: string;
 }
 const LineCharts = () => {
-  const description = "A radial chart with a label";
   const [chartData, setChartData] = useState<IncomesData[]>([]);
   const [loading, setLoading] = useState(false);
 

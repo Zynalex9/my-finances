@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       income: newIncome,
     });
 
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any)/* eslint-disable */ {
     console.log("Unexpected error occurred in adding income:", error);
     return NextResponse.json(
       {

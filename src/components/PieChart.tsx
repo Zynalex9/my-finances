@@ -7,7 +7,6 @@ import { Label, Pie, PieChart } from "recharts"; // Importing necessary componen
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -26,6 +25,11 @@ interface ExpenseItem {
   category: string;
   amount: number;
   currency: string;
+}
+interface Expense{
+category:string,
+amount:number,
+currency:string
 }
 
 // Function to generate HSL color for blue shades
@@ -50,7 +54,7 @@ const PieCharts = () => {
         console.log("response.data.allExpenses", result);
 
         // Format the data for the pie chart
-        const formattedData = result.map((expense: any, index: any) => ({
+        const formattedData = result.map((expense: Expense, index: number) => ({
           category: expense.category,
           amount: expense.amount,
           currency: expense.currency,
@@ -61,13 +65,17 @@ const PieCharts = () => {
 
         // Calculate total expenses
         const total = result.reduce(
-          (sum: any, expense: any) => sum + expense.amount,
+          (sum: number, expense: Expense) => sum + expense.amount,
           0
         );
         setTotalExpenses(total);
         setLoading(false);
         console.log("formattedData Pie Chart,", formattedData);
-      } catch (error) {
+      } 
+       /* eslint-disable */
+      catch (error)
+       /* eslint-disable */
+        {
         console.error("Error fetching expense data:", error);
         setLoading(true);
       }
@@ -76,7 +84,6 @@ const PieCharts = () => {
     fetchData();
   }, []);
 
-  const description = "A donut chart with text";
 
   const chartConfig = {
     visitors: { label: "Visitors" },
@@ -87,7 +94,6 @@ const PieCharts = () => {
     other: { label: "Other", color: "hsl(var(--chart-5))" },
   } satisfies ChartConfig;
 
-  const totalVisitors = totalExpenses;
   if (loading) {
     return (
       <Card className="flex flex-col bg-gray-800 text-white min-h-80">

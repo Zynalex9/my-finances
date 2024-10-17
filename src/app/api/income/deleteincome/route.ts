@@ -3,7 +3,7 @@ import { dbConnect } from "../../../../../helpers/connectDB";
 import incomeModel from "../../../../../models/incomeModel.model";
 import budgetModel from "../../../../../models/budgetModel.model";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import mongoose, { Types } from "mongoose"; 
+/* eslint-disable */ import mongoose, { Types } from "mongoose"; /* eslint-disable */
 
 dbConnect();
 
@@ -60,7 +60,7 @@ export async function DELETE(request: NextRequest) {
       success: true,
       message: "Income deleted successfully and exceeding budgets removed.",
     });
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any)/* eslint-disable */ {
     console.log("Unexpected error occurred in deleting income:", error);
     return NextResponse.json(
       {

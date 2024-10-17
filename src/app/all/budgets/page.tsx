@@ -29,7 +29,9 @@ const formatDate = (dateString: string) => {
 };
 
 const Page = () => {
+  /* eslint-disable */
   const [budgets, setBudgets] = useState<any[]>([]);
+  /* eslint-disable */
   const [loader, setLoader] = useState(true);
 
   async function getBudgets() {

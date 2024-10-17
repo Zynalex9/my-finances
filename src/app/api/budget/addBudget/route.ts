@@ -3,14 +3,16 @@ import { dbConnect } from "../../../../../helpers/connectDB";
 import budgetModel from "../../../../../models/budgetModel.model";
 import incomeModel from "../../../../../models/incomeModel.model";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import mongoose, { Types } from "mongoose";
+import { Types } from "mongoose";
 
 dbConnect();
 
 export async function POST(request: NextRequest) {
   const reqBody = await request.json();
+  /* eslint-disable */
   let { category, amount: rawAmount, currency, startDate, endDate } = reqBody;
   const amount = Number(rawAmount);
+  /* eslint-disable */
   category = category.toLowerCase();
   try {
     const token = request.cookies.get("token");

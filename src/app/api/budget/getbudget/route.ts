@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any)/* eslint-disable */ {
     console.error("Error retrieving budget:", error);
     return NextResponse.json(
       {

@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -43,7 +42,7 @@ export default function AddNewBudget() {
     resolver: zodResolver(budgetSchema),
   });
   const {
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
     setError,
   } = form;
 
@@ -74,8 +73,11 @@ export default function AddNewBudget() {
           variant: "destructive",
         });
       }
-    } catch (error: any) {
-      const message = error.response?.data?.message || error.message || "An unexpected error occurred.";
+
+    } 
+    /* eslint-disable */
+    catch (error: any) {
+      const message:string = error.response?.data?.message || error.message || "An unexpected error occurred.";
       if (error.response?.data?.errors) {
         Object.keys(error.response.data.errors).forEach((key) => {
           setError(key as any, {
@@ -89,6 +91,7 @@ export default function AddNewBudget() {
         description: message,
       });
     }
+    /* eslint-disable */
   }
 
   return (

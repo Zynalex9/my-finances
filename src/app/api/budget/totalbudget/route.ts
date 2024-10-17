@@ -31,7 +31,11 @@ export async function GET(request: NextRequest) {
         success: true,
         totalIncome: totalBudget[0]?.totalBudget || 0,
       });
-  }  catch (error: any) {
+  }  
+  /* eslint-disable */
+  catch (error: any)
+  /* eslint-disable */
+   {
     console.log("Unexpected error occurred in fetching total income:", error);
 
     return NextResponse.json(

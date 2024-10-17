@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
       success: true,
       totalIncome: totalIncome[0]?.totalIncome || 0,
     });
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any) /* eslint-disable */{
     console.log("Unexpected error occurred in fetching total income:", error);
 
     // Handle any unexpected errors

@@ -17,5 +17,5 @@ export const signUpSchema = z.object({
     .enum(["usd", "pkr", "eur", "inr"], {
       errorMap: () => ({ message: "Invalid currency. Must be one of: usd, pkr, eur, inr" }),
     })
-    .default("usd"), // Set a default value for currency
+    .default("usd"), // Default value is set correctly
 });

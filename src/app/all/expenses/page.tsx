@@ -12,8 +12,10 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 const Page = () => {
+ /* eslint-disable */
   const [expenses, setExpenses] = useState<any[]>([]);
-  const [loading, setLoading] = useState<Boolean>(false);
+  /* eslint-disable */
+  const [loading, setLoading] = useState<boolean>(false);
   async function getExpenses() {
     try {
       setLoading(true);

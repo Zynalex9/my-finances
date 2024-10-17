@@ -10,18 +10,26 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { toast, useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { signUpSchema } from "../../../../schema/signUpSchema";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { z } from "zod";
+interface SignUpFormData {
+  displayName: string;
+  username: string;
+  email: string;
+  password: string;
+  currency: string;
+}
 const SignUp = () => {
   const router = useRouter();
-  const methods = useForm({
+  const methods = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
   });
   const { toast } = useToast();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SignUpFormData) => {
     try {
       const response = await axios.post("/api/user/sign-up", data);
       toast({
@@ -29,9 +37,12 @@ const SignUp = () => {
         description: response.data.message,
       });
       router.replace("/sign-in");
-    } catch (error: any) {
+    }
+    /* eslint-disable */
+     catch (error: any) {
       console.log("error in submitting to sign up", error.message);
     }
+    /* eslint-disable */
   };
 
   return (

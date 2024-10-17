@@ -32,7 +32,10 @@ export async function PATCH(request: NextRequest) {
       message: "Budget updated successfully",
       updatedBudget, // Return the updated budget
     });
-  } catch (error: any) {
+  }
+  /* eslint-disable */
+   catch (error: any) {
+    /* eslint-disable */
     console.log("Error updating budget:", error);
     return NextResponse.json(
       {

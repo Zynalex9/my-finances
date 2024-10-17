@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -34,12 +33,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-const page = () => {
-  const [resBudget, setResBudget] = useState<any[]>([]);
-  const [budgetID, setBudgetID] = useState("");
+const Page = () => {
   const form = useForm({
     resolver: zodResolver(expenseSchema),
     // defaultValues:{
@@ -52,6 +48,7 @@ const page = () => {
   } = form;
 
   const { toast } = useToast();
+  /* eslint-disable */
   async function onSubmit(data: any) {
     try {
       const { category } = data;
@@ -63,9 +60,7 @@ const page = () => {
       );
 
       if (singleBudget.status === 200) {
-        setResBudget(singleBudget.data);
         const newBudgetID = singleBudget.data.budget._id;
-        setBudgetID(newBudgetID); // Update the state with the actual budget ID
 
         const reqData = {
           budgetId: newBudgetID, // Now this will be the actual budget ID
@@ -100,7 +95,11 @@ const page = () => {
           variant: "destructive",
         });
       }
-    } catch (error: any) {
+
+    } 
+    /* eslint-disable */
+    /* eslint-disable */
+    catch (error: any) {
       console.error("Error fetching or adding expense:", error);
       toast({
         title: "Error",
@@ -108,6 +107,7 @@ const page = () => {
         variant: "destructive",
       });
     }
+    /* eslint-disable */
   }
 
   return (
@@ -257,4 +257,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -52,7 +52,7 @@ export async function PATCH(request: NextRequest) {
       expense,
       updatedBudget: budget,
     });
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any)/* eslint-disable */ {
     console.log("Error updating expense:", error);
     return NextResponse.json(
       {

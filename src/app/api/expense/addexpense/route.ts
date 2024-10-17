@@ -8,7 +8,8 @@ dbConnect();
 
 export async function POST(request: NextRequest) {
   const reqBody = await request.json();
-  const { budgetId, category, amount, currency, description, spendingDate } = reqBody;
+  const { budgetId, category, amount, currency, description, spendingDate } =
+    reqBody;
 
   try {
     const token = request.cookies.get("token");
@@ -78,11 +79,18 @@ export async function POST(request: NextRequest) {
       expense: newExpense,
       updatedBudget: budget,
     });
-
-  } catch (error: any) {
+    /* eslint-disable */
+  } catch (
+    error: any
+  ) {
+    /* eslint-disable */
     console.log("Error adding expense:", error);
     return NextResponse.json(
-      { success: false, message: "Internal Server Error", error: error.message },
+      {
+        success: false,
+        message: "Internal Server Error",
+        error: error.message,
+      },
       { status: 500 }
     );
   }

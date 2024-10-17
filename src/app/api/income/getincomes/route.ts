@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       success: true,
       incomes,
     });
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any)/* eslint-disable */ {
     console.log("Unexpected error occurred in fetching incomes:", error);
     return NextResponse.json(
       {

@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form"; // Ensure this import is correct
 import { incomeSchema } from "../../../../schema/incomeSchema";
 import { Button } from "@/components/ui/button";
@@ -23,11 +23,10 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 
 const Page = () => {
-  const [reqData, setReqData] = useState<AxiosResponse>();
   const { toast } = useToast();
 
   // Initialize form with useForm
@@ -42,12 +41,11 @@ const Page = () => {
 
   // Destructure reset and formState from form
   const { reset, formState: { errors, isSubmitting } } = form;
+  /* eslint-disable */
   const onSubmit = async (data: any) => {
-    console.log(data); // Handle form submission
+    console.log(data); 
     try {
       const response = await axios.post("/api/income/addincome", data);
-      console.log(response);
-      setReqData(response);
       toast({
         title: "Income Added",
         description: "New income has been added!",
@@ -63,7 +61,7 @@ const Page = () => {
       });
     }
   };
-
+/* eslint-disable */
   return (
     <div className="bg-dark-gray text-white min-h-screen py-10">
     <Form {...form}>

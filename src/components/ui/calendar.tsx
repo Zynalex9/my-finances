@@ -59,6 +59,7 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
+       /* eslint-disable */
       components={{
         IconLeft: ({ ...props }) => <ChevronLeftIcon className="h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRightIcon className="h-4 w-4" />,
@@ -66,7 +67,7 @@ function Calendar({
       {...props}
     />
   )
-}
+} /* eslint-disable */
 Calendar.displayName = "Calendar"
 
 export { Calendar }

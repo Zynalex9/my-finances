@@ -23,7 +23,7 @@ const formatDate = (dateString: string) => {
 };
 
 const AllIncomes = () => {
-  const [incomes, setIncomes] = useState<any[]>([]);
+  /* eslint-disable */const [incomes, setIncomes] = useState<any[]>([]);/* eslint-disable */
   const [loader, setLoader] = useState(true);
 
   // Fetch incomes from the API

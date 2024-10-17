@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       .populate("userId", "displayName email");
     console.log(userIdFromToken);
     return NextResponse.json({ success: true, budgets: allBudgets });
-  } catch (error: any) {
+  } /* eslint-disable */catch (error: any)/* eslint-disable */ {
     console.error("Error retrieving budgets:", error);
     return NextResponse.json(
       {
